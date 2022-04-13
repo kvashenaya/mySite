@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Create page</title>
+</head>
+<body>
+	<form action="{% url 'polls:new' %}" method="post">
+{% csrf_token %}
+    <label class="text" for="question">Номінація</label><br>
+    <input class="text" type="text" name="qText" id="question" value="">
+
+    <label class="text" for="question">Введіть ім'я кандидатів:</label><br>
+    <input class="text" type="text" name="cText" id="choice" value="">
+<input type="submit" value="Create">
+</form>
+</body>
+</html>

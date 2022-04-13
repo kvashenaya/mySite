@@ -1,0 +1,7 @@
+<!-- <ul>
+{% for choice in question.choice_set.all %}
+	{% if choice.max = choice.votes %}
+		<li>{{ choice.choice_text }} -- {{ choice.max }} votes</li>
+	{%endif%}
+{% endfor %}
+</ul> -->

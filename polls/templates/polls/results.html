@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+	{% load static %}
+	<title>Results page</title>
+	<link rel="stylesheet" type="text/css" href="{% static 'polls/style2.css' %}">
+</head>
+<body>
+<div class="Main">
+<div class="left">
+	<div class="data">
+	<h1>{{ question.question_text }}</h1>
+	</div>
+
+<div class="vote">
+{% if error_message %}<p>Спочатку обери кандидата</p>{% endif %}
+
+<form action="{% url 'polls:vote' question.id %}" method="post">
+{% csrf_token %}
+{% for choice in question.choice_set.all  %}
+    <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}">
+    <label class="radio" for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br>
+{% endfor %}
+<input class="back" type="submit" value="Vote">
+</form>
+</div>
+
+<div class="all">
+	<br><br><br>
+<p class="p">У цій категорії вже проголосувало</p>
+{% for choice in question.choice_set.all %}
+		{% if choice.id == 6 or choice.id == 1 %}
+		<h2 class="p">{{ choice.sum }} </h2>
+	 	{% endif %}
+	{% endfor %}
+<p class="p">користувачів</p>
+	
+<br><br>
+<button class="back"><a href="{% url 'polls:index' %}">Голосувати в іншій категорії</a></button>
+</div>
+</div>
+
+<div class="right">
+<div class="res">
+{% for choice in question.choice_set.all %}
+	<label class="bars" for="bar">{{ choice.choice_text }}: {{choice.votes}} голосів</label>
+	<br>
+	<progress class="bars" id="bar" value="{{ choice.percent }}" max="100"> {{ choice.percent }} </progress>
+	<label class="bars" for="bar">{{ choice.percent }} %</label>
+	<br>
+    <!-- <p class="fire">{{ choice.choice_text }} - <b>{{ choice.votes }}</b> прихильників </p> -->
+{% endfor %}
+
+<br><br>
+</div>
+
+
+	<div class="lilu">
+	<div class="li">
+<h2>Лідери голосування:</h2>
+
+{% for choice in question.choice_set.all %}
+		{% if choice.max > -1 %}
+		<p class="top">{{ choice.choice_text }} - <strong>{{ choice.max }}</strong> прихильників </p>
+	 	{% endif %}
+{% endfor %}
+
+<br><br>
+	</div>
+
+	<div class="lu">
+<h2>Лузери голосування:</h2>
+
+{% for choice in question.choice_set.all %}
+		{% if choice.min != 10000 and choice.min != choice.max %}
+		<p class="dno">{{ choice.choice_text }} - <strong>{{ choice.min }}</strong> прихильників </p>
+		{% else %}
+			{% if forloop.counter == 1 %}
+     		<p>Отакої! Лузерів поки не видно</p>
+   			{% endif %}	
+	 	{% endif %}
+{% endfor %}
+
+
+<br><br>
+	</div>
+
+	</div>
+</div>
+
+</div>
+</body>
+</html>
+
