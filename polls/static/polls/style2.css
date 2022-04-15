@@ -14,9 +14,7 @@ a{
 	text-decoration: none;
 	color: black;
 }
-a:hover{
-	color: white;
-}
+
 p{
 	font-size: 1.5rem;
 	color: black;
@@ -29,9 +27,7 @@ li{
 .p{
 	display: inline;
 }
-.fire:before {
-	content: "🔥"; 
-}
+
 .top:before {
 	content: "😸"; 
 }
@@ -47,6 +43,7 @@ li{
 }
 .back:hover{
 	background: rgba(0,0,0,0.8);
+	color: white;
 	transition: 1s
 }
 label{

@@ -11,17 +11,19 @@
 	<div class="data">
 	<h1>{{ question.question_text }}</h1>
 	</div>
+	<br><br>
 
 <div class="vote">
 {% if error_message %}<p>Спочатку обери кандидата</p>{% endif %}
 
 <form action="{% url 'polls:vote' question.id %}" method="post">
 {% csrf_token %}
-{% for choice in question.choice_set.all  %}
+{% for choice in question.choice_set.all %}
     <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}">
     <label class="radio" for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br>
 {% endfor %}
-<input class="back" type="submit" value="Vote">
+<br>
+<input class="back" type="submit" value="Голосувати">
 </form>
 </div>
 
@@ -36,7 +38,7 @@
 <p class="p">користувачів</p>
 	
 <br><br>
-<button class="back"><a href="{% url 'polls:index' %}">Голосувати в іншій категорії</a></button>
+<a href="{% url 'polls:index' %}"><input type="button" class="back" value="Голосувати в іншій категорії" ></a>
 </div>
 </div>
 
@@ -48,7 +50,6 @@
 	<progress class="bars" id="bar" value="{{ choice.percent }}" max="100"> {{ choice.percent }} </progress>
 	<label class="bars" for="bar">{{ choice.percent }} %</label>
 	<br>
-    <!-- <p class="fire">{{ choice.choice_text }} - <b>{{ choice.votes }}</b> прихильників </p> -->
 {% endfor %}
 
 <br><br>
@@ -74,10 +75,7 @@
 {% for choice in question.choice_set.all %}
 		{% if choice.min != 10000 and choice.min != choice.max %}
 		<p class="dno">{{ choice.choice_text }} - <strong>{{ choice.min }}</strong> прихильників </p>
-		{% else %}
-			{% if forloop.counter == 1 %}
-     		<p>Отакої! Лузерів поки не видно</p>
-   			{% endif %}	
+		
 	 	{% endif %}
 {% endfor %}
 

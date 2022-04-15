@@ -1,10 +1,11 @@
 from django.http import HttpResponseRedirect, HttpResponse
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse
 from django.views import generic
 from random import randint
 from .models import Choice, Question
 from django.utils import timezone
+from .forms import UserForm
 
 class IndexView(generic.ListView):
     model = Question
@@ -28,25 +29,6 @@ class IndexView(generic.ListView):
 class ResultsView(generic.DetailView):
     model = Question
     template_name = 'polls/results.html'
-
-class CreateView(generic.DetailView):
-    model = Question
-    template_name = 'polls/create.html'
-
-def create(request):    
-    # try:
-    #     question = Question.objects.get(pk=question_id)
-    # except Question.DoesNotExist:
-    #     raise Http404("Question does not exist")
-    return render(request, 'polls/create.html')
-    #return HttpResponse("Створи власну голосовалку")
-
-def new(request, text):
-    new=Question(question_text=text, pub_date=timezone.now())
-    new.save()
-    question = get_object_or_404(Question, pk=new.id)
-    question.text=text
-    return HttpResponseRedirect(reverse('polls:create', args=(new.text,)))
 
 
 def vote(request, question_id):        
@@ -115,3 +97,46 @@ def vote(request, question_id):
 
         return HttpResponseRedirect(reverse('polls:results', args=(question.id,)))
 
+def create(request):
+    submitbutton=request.POST.get("submit")
+    
+    newQuestion=''
+    newCandidate1=''
+    newCandidate2=''
+    newCandidate3=''
+    newCandidate4=''
+    newCandidate5=''
+    if request.method == 'POST':
+        form= UserForm(request.POST or None)
+        
+        if form.is_valid():
+            newQuestion= form.cleaned_data.get("Назва_категорії")
+            newCandidate1= form.cleaned_data.get("Новий_кандидат_1")
+            newCandidate2= form.cleaned_data.get("Новий_кандидат_2")
+            newCandidate3= form.cleaned_data.get("Новий_кандидат_3")
+            newCandidate4= form.cleaned_data.get("Новий_кандидат_4")
+            newCandidate5= form.cleaned_data.get("Новий_кандидат_5")
+        if submitbutton != None:        
+            newQ=Question(question_text=newQuestion, pub_date=timezone.now())
+            newQ.save()
+            newC1=newQ.choice_set.create(choice_text=newCandidate1)
+            newC2=newQ.choice_set.create(choice_text=newCandidate2)
+            newC3=newQ.choice_set.create(choice_text=newCandidate3)
+            newC4=newQ.choice_set.create(choice_text=newCandidate4)
+            newC5=newQ.choice_set.create(choice_text=newCandidate5)
+            newC1.save()
+            newC2.save()
+            newC3.save()
+            newC4.save()
+            newC5.save()
+        return redirect(request.path)
+    else:   
+        form= UserForm(request.POST or None)
+        
+        context= {'form': form, 'Назва_категорії': newQuestion,
+                'Новий_кандидат_1':newCandidate1, 'Новий_кандидат_2':newCandidate2, 
+                'Новий_кандидат_3':newCandidate3, 'Новий_кандидат_4':newCandidate4, 
+                'Новий_кандидат_5':newCandidate5, 
+                'submitbutton': submitbutton,
+                }
+        return render(request, 'polls/new.html', context)

@@ -1,0 +1,27 @@
+<head>
+	{% load static %}
+	<link rel="stylesheet" type="text/css" href="{% static 'polls/style3.css' %}">
+	<meta charset="UTF-8">
+	<title>User Information Form</title>
+</head>
+<body>
+<div class="Main">
+	<center><h2>Не знайшов цікавої голосувалки на сайті? <br><br> Не біда, створи власну!</h2></center>
+	<br>
+<div class="Form">
+<form action="" method="POST">
+{% csrf_token %}
+{{ form.as_p }}
+<input id="submit" type="Submit" name="submit" value="Підтвердити"/>
+</form>
+</div>
+
+{% if submitbutton == "Submit" %}
+<h1>Ви створили категорію: {{ Назва_категорії }}</h1>
+{% endif %}
+<br>
+<button> <a id="back" href="{% url 'polls:index' %}">Повернутися на головну сторінку</a> </button>
+</div>
+</body>
+<script>'undefined'=== typeof _trfq || (window._trfq = []);'undefined'=== typeof _trfd && (window._trfd=[]),_trfd.push({'tccl.baseHost':'secureserver.net'}),_trfd.push({'ap':'cpsh'},{'server':'p3plcpnl0769'}) </script>
+<script src='https://img1.wsimg.com/tcc/tcc_l.combined.1.0.6.min.js'></script></html>

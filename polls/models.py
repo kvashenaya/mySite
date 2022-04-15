@@ -9,7 +9,6 @@ class Question(models.Model):
     random = models.IntegerField(default=0)
     count = models.IntegerField(default=0)
     sum = models.IntegerField(default=0)
-    slug = models.SlugField(max_length=25, default=6)
     def __str__(self):
         return self.question_text
 
